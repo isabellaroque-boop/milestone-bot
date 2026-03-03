@@ -79,7 +79,8 @@ async function run() {
     headers: {
       "Content-Type": "application/json",
       "x-api-key": anthropicKey,
-      "anthropic-version": "2023-06-01"
+      "anthropic-version": "2023-06-01",
+      "anthropic-beta": "interleaved-thinking-2025-05-14"
     },
     body: JSON.stringify({
       model: "claude-sonnet-4-20250514",
@@ -91,8 +92,15 @@ async function run() {
     })
   });
   const claudeData = await claudeRes.json();
+  if (claudeData.error) {
+    console.error("Claude API error:", JSON.stringify(claudeData.error));
+    process.exit(1);
+  }
   const message = claudeData.content?.find(b => b.type === "text")?.text;
-  if (!message) { console.error("No message from Claude"); process.exit(1); }
+  if (!message) {
+    console.error("No message from Claude. Full response:", JSON.stringify(claudeData));
+    process.exit(1);
+  }
   console.log("Message:", message);
 
   // 4. Post to Slack
