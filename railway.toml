@@ -1,0 +1,5 @@
+[deploy]
+# Runs every Thursday at 9am Melbourne time (UTC+11 in summer / UTC+10 in winter)
+# Adjust the hour if needed: 9am AEDT = 22:00 UTC, 9am AEST = 23:00 UTC
+cronSchedule = "0 22 * * 4"
+startCommand = "node index.js"
